@@ -3,6 +3,7 @@ import {
   UnauthenticatedError,
   BadRequestError,
 } from "../errors/customErrors.js";
+import jwt from "jsonwebtoken";
 
 export const authMiddleware = (req, res, next) => {
   const token = req.headers['token'];
@@ -21,6 +22,13 @@ export const authMiddleware = (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
+    if (err instanceof jwt.TokenExpiredError) {
+      return res.status(401).json({
+        data: {},
+        message: 'Unauthorized',
+        status: 401
+      });
+    }
     res.json({
       data: {},
       message: 'Internal server error',
