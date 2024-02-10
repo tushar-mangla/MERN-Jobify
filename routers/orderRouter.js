@@ -3,12 +3,12 @@ const router = Router();
 
 import { createOrder, deleteOrder, updateOrderStatus, getOrderList } from "../controllers/orderContoller.js";
 
-router.post('/', createOrder);
+router.post('/create', createOrder);
 
-router.delete('/:id', deleteOrder);
+router.delete('/delete/:id', deleteOrder);
 
-router.put('/:id/status', updateOrderStatus);
+router.put('/update/:id/status', updateOrderStatus);
 
-router.get('/', getOrderList);
+router.get('/get', getOrderList);
 
 export default router;

@@ -3,14 +3,14 @@ const router = Router();
 
 import { createMenuItems, getAllMenuItems, getSingleMenuItem, updateSingleMenuItem, deleteMenuItem } from "../controllers/menuItemsController.js";
 
-router.post("/", createMenuItems);
+router.post("/create", createMenuItems);
 
-router.get("/", getAllMenuItems);
+router.get("/get", getAllMenuItems);
 
-router.get("/:id", getSingleMenuItem);
+router.get("/get/:id", getSingleMenuItem);
 
-router.put("/:id", updateSingleMenuItem);
+router.put("/update/:id", updateSingleMenuItem);
 
-router.delete("/:id", deleteMenuItem);
+router.delete("/delete/:id", deleteMenuItem);
 
 export default router;
