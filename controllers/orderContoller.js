@@ -79,6 +79,32 @@ export const getOrderList = async (req, res) => {
     }
 }
 
+export const getSingleOrder = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const order = await OrderDetails.findById(id);
+
+        if (!order) {
+            return res.json({
+                data: {},
+                message: 'Order not found',
+                status: 404
+            });
+        }
+
+        return res.json({
+            data: order,
+            message: 'get current Order',
+            status: 200
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 export const updateOrderStatus = async (req, res) => {
     try {
         const { id } = req.params;
