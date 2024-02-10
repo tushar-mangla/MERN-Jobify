@@ -23,10 +23,11 @@ export const createOrder = async (req, res) => {
             })
         }
 
-        const menuItems = await MenuItems.find({ _id: { $in: items.map(item => item.menuItemId) } });
+        const menuItems = await MenuItems.find({ _id: { $in: items?.map(item => item?.menuItemId) } });
+
         let totalAmount = 0;
-        items.forEach(orderItem => {
-            const menuItem = menuItems.find(item => item._id.toString() === orderItem.menuItemId.toString());
+        items?.forEach(orderItem => {
+            const menuItem = menuItems?.find(item => item?._id.toString() === orderItem?.menuItemId?.toString());
             if (menuItem) {
                 totalAmount += menuItem.price * orderItem.quantity;
             }
