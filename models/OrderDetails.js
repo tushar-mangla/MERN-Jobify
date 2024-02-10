@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MenuItem' }],
+    items: [{
+        menuItemId: { type: mongoose.Schema.Types.ObjectId, ref: 'MenuItem' },
+        quantity: Number
+    }],
     totalAmount: Number,
     paymentId: String,
     isOrderConfirmed: { type: Boolean, default: false }, // New field to track order confirmation status

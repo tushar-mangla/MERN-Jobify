@@ -29,7 +29,7 @@ export const createOrder = async (req, res) => {
         items?.forEach(orderItem => {
             const menuItem = menuItems?.find(item => item?._id.toString() === orderItem?.menuItemId?.toString());
             if (menuItem) {
-                totalAmount += menuItem.price * orderItem.quantity;
+                totalAmount += menuItem.price * orderItem?.quantity;
             }
         });
 
