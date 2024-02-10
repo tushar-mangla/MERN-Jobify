@@ -22,7 +22,7 @@ export const register = async (req, res) => {
     const isFirstAccount = (await User.countDocuments()) == 0;
     req.body.role = isFirstAccount ? "admin" : "user";
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.json({
         data: {},
@@ -66,7 +66,7 @@ export const login = async (req, res) => {
       });
     }
 
-    const isPasswordValid = await comparePassword(req.body.password, user.password)
+    const isPasswordValid = await comparePassword(password, user.password)
     if (!isPasswordValid) {
       return res.json({
         data: {},
