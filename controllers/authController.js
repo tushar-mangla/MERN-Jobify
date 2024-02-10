@@ -7,34 +7,85 @@ import { UnauthenticatedError } from "../errors/customErrors.js";
 import { createJWT } from "../utils/tokenUtils.js";
 
 export const register = async (req, res) => {
-  const isFirstAccount = (await User.countDocuments()) == 0;
-  req.body.role = isFirstAccount ? "admin" : "user";
 
-  const hashedPassword = await hashPassword(req.body.password);
-  req.body.password = hashedPassword;
+  try {
+    const { name, email, password } = req.body;
 
-  await User.create(req.body);
-  res.status(StatusCodes.CREATED).json({ msg: "user created" });
+    if (!name || !email || !password) {
+      return res.json({
+        data: {},
+        message: "please fill all required fields",
+        status: 400
+      })
+    }
+
+    const isFirstAccount = (await User.countDocuments()) == 0;
+    req.body.role = isFirstAccount ? "admin" : "user";
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.json({
+        data: {},
+        message: 'Username already exists',
+        status: 400
+      });
+    }
+
+    const hashedPassword = await hashPassword(req.body.password);
+    req.body.password = hashedPassword;
+
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword
+    });
+
+    const user = await newUser.save();
+
+    res.status(201).json({
+      data: user,
+      message: 'User registered successfully',
+      status: 200
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
 export const login = async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
+  try {
+    const { email, password } = req.body;
 
-  const isValidUser =
-    user && (await comparePassword(req.body.password, user.password));
-  if (!isValidUser) throw new UnauthenticatedError("invalid credentials");
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({
+        data: {},
+        message: 'Invalid credentials',
+        status: 400
+      });
+    }
 
-  const token = createJWT({ userId: user._id, role: user.role });
+    const isPasswordValid = await comparePassword(req.body.password, user.password)
+    if (!isPasswordValid) {
+      return res.json({
+        data: {},
+        message: 'Invalid credentials',
+        status: 400
+      });
+    }
 
-  const oneDay = 1000 * 60 * 60 * 24;
+    const token = createJWT({ userId: user._id, role: user.role });
 
-  res.cookie("token", token, {
-    httpOnly: true,
-    expires: new Date(Date.now() + oneDay),
-    secure: process.env.NODE_ENV === "production",
-  });
-
-  res.status(StatusCodes.OK).json({ msg: "login successfully" });
+    res.json({
+      data: token,
+      message: "login successfully",
+      status: 20
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
 export const logout = async (req, res) => {
