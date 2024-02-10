@@ -4,7 +4,8 @@ import OrderDetails from "../models/OrderDetails.js";
 
 export const createOrder = async (req, res) => {
     try {
-        const { userId, items, address } = req.body;
+        const { userId } = req.user;
+        const { items, address } = req.body;
 
         if (items?.length == 0) {
             return res.json({
