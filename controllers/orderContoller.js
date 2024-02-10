@@ -1,5 +1,5 @@
-import MenuItems from "../models/MenuItems";
-import OrderDetails from "../models/OrderDetails";
+import MenuItems from "../models/MenuItems.js";
+import OrderDetails from "../models/OrderDetails.js";
 
 
 export const createOrder = async (req, res) => {
