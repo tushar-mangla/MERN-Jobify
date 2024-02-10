@@ -1,17 +1,17 @@
 import MenuItem from "../models/MenuItems.js";
 
-export const createMenuItems = async () => {
+export const createMenuItems = async (req, res) => {
     try {
         const { name, price, description } = req.body;
 
-        if (!name || !price || description) {
+        if (!name || !price || !description) {
             return res.json({
                 data: {},
                 message: 'please add all required fields',
                 status: 400
             });
         }
-        const menuItem = new MenuItems({ name, price, description });
+        const menuItem = new MenuItem({ name, price, description });
         await menuItem.save();
         return res.json({
             data: menuItem,
@@ -76,7 +76,11 @@ export const updateSingleMenuItem = async (req, res) => {
         const { name, price, description } = req.body;
         const updatedMenuItem = await MenuItem.findByIdAndUpdate(req.params.id, { name, price, description }, { new: true });
         if (!updatedMenuItem) {
-            return res.status(404).json({ message: 'Menu item not found' });
+            return res.json({
+                data: {},
+                message: 'Menu item not found',
+                status: 404
+            });
         }
         return res.json({
             data: updatedMenuItem,
