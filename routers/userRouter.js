@@ -5,12 +5,10 @@ import {
   getCurrentUser,
   updateUser,
 } from "../controllers/userController.js";
-import { validateUpdateUserInput } from "../middleware/validationMiddleware.js";
 
-router.get("/current-user", getCurrentUser);
-router.patch(
-  "/update-user",
-  validateUpdateUserInput,
+router.get("/get", getCurrentUser);
+router.put(
+  "/update",
   updateUser
 );
 export default router;
