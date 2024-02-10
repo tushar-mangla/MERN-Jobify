@@ -14,6 +14,7 @@ import mongoose from "mongoose";
 import authRouter from "./routers/authRouter.js";
 import menuItemsRouter from './routers/menuItemsRouter.js'
 import userRouter from "./routers/userRouter.js";
+import orderRouter from './routers/orderRouter.js'
 
 //public
 import { dirname } from "path";
@@ -26,7 +27,7 @@ app.use(express.static(path.resolve(__dirname, "./public")));
 
 //middleware
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
-import { authenticateUser } from "./middleware/authMiddleware.js";
+import { authMiddleware } from "./middleware/authMiddleware.js";
 
 
 // if (process.env.NODE_ENV === "development") {
@@ -44,8 +45,9 @@ app.post("/", (req, res) => {
   console.log(req);
   res.json({ message: "data received", data: req.body });
 });
-app.use("/api/users", authenticateUser, userRouter);
-app.use("/api/menuItems", authenticateUser, menuItemsRouter);
+app.use("/api/users", authMiddleware, userRouter);
+app.use("/api/menuItems", authMiddleware, menuItemsRouter);
+app.use("/api/order", authMiddleware, orderRouter);
 app.use("/api/auth", authRouter);
 
 app.get("*", (req, res) => {
