@@ -12,4 +12,4 @@ router.get("/get/:id", getSingleOrder);
 
 router.get('/get', getOrderList);
 
-export default router;
+export default router; 
