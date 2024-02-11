@@ -17,8 +17,8 @@ export const authMiddleware = (req, res, next) => {
   }
 
   try {
-    const { userId, role } = verifyJWT(token);
-    req.user = { userId, role };
+    const { userId, role, name } = verifyJWT(token);
+    req.user = { userId, role, name };
     next();
   } catch (error) {
     console.error(error);

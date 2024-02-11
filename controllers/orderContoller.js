@@ -72,8 +72,6 @@ export const getOrderList = async (req, res) => {
         }
         orders = await OrderDetails.find(filter).sort({ _id: -1 });
 
-
-
         res.status(201).json({
             data: orders,
             message: 'orders list',
@@ -119,7 +117,7 @@ export const updateOrderStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const { role } = req?.user
-        const { status, isOrderConfirmed } = req.body;
+        const { status } = req?.body;
 
         if (role !== 'admin') {
             return res.status(403).json({
@@ -131,7 +129,7 @@ export const updateOrderStatus = async (req, res) => {
 
         const updateFields = {};
         if (status) updateFields.status = status;
-        if (isOrderConfirmed !== undefined) updateFields.isOrderConfirmed = isOrderConfirmed;
+        // if (isOrderConfirmed !== undefined) updateFields.isOrderConfirmed = isOrderConfirmed;
 
         const order = await OrderDetails.findByIdAndUpdate(id, updateFields, { new: true });
         if (!order) {
