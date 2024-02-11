@@ -54,9 +54,9 @@ app.use("/api/menuItems", authMiddleware, menuItemsRouter);
 app.use("/api/order", authMiddleware, orderRouter);
 app.use("/api/auth", authRouter);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "./client/dist", "index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "./client/dist", "index.html"));
+// });
 
 app.use("*", (req, res) => {
   res.status(404).json({ msg: "not found" });
