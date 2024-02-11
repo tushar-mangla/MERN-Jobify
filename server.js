@@ -3,7 +3,10 @@ import "express-async-errors";
 import * as dotenv from "dotenv";
 dotenv.config();
 import express from "express";
+import cors from 'cors';
+
 const app = express();
+
 // import morgan from "morgan";
 import mongoose from "mongoose";
 // import cookieParser from "cookie-parser";
@@ -36,6 +39,7 @@ import { authMiddleware } from "./middleware/authMiddleware.js";
 
 app.use(express.static(path.resolve(__dirname, "./client/dist")));
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("hello world");

@@ -26,7 +26,7 @@ export const register = async (req, res) => {
     if (existingUser) {
       return res.json({
         data: {},
-        message: 'Username already exists',
+        message: 'User already exists',
         status: 400
       });
     }
@@ -80,7 +80,7 @@ export const login = async (req, res) => {
     res.json({
       data: token,
       message: "login successfully",
-      status: 20
+      status: 200
     });
   } catch (error) {
     console.error(error);
