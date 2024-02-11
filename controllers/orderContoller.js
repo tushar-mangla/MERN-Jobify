@@ -117,7 +117,7 @@ export const updateOrderStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const { role } = req?.user
-        const { status } = req?.body;
+        const { status, driverInfo } = req?.body;
 
         if (role !== 'admin') {
             return res.status(403).json({
@@ -129,7 +129,7 @@ export const updateOrderStatus = async (req, res) => {
 
         const updateFields = {};
         if (status) updateFields.status = status;
-        // if (isOrderConfirmed !== undefined) updateFields.isOrderConfirmed = isOrderConfirmed;
+        if (driverInfo !== undefined) updateFields.driverInfo = driverInfo;
 
         const order = await OrderDetails.findByIdAndUpdate(id, updateFields, { new: true });
         if (!order) {
