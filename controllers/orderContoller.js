@@ -108,7 +108,16 @@ export const getSingleOrder = async (req, res) => {
 export const updateOrderStatus = async (req, res) => {
     try {
         const { id } = req.params;
+        const { role } = req?.user
         const { status, isOrderConfirmed } = req.body;
+
+        if (role !== 'admin') {
+            return res.status(403).json({
+                data: {},
+                message: 'You are not authorized to update order status',
+                status: 403
+            });
+        }
 
         const updateFields = {};
         if (status) updateFields.status = status;
@@ -138,29 +147,27 @@ export const updateOrderStatus = async (req, res) => {
 }
 
 export const deleteOrder = async (req, res) => {
-    router.delete('/orders/:id', async (req, res) => {
-        try {
-            const { id } = req.params;
-            const order = await OrderDetails.findByIdAndDelete(id);
-            if (!order) {
-                return res.json({
-                    data: {},
-                    message: 'Order not found',
-                    status: 404
-                });
-            }
+    try {
+        const { id } = req.params;
+        const order = await OrderDetails.findByIdAndDelete(id);
+        if (!order) {
             return res.json({
-                data: order,
-                message: 'Order deleted successfully',
-                status: 200
-            });
-        } catch (error) {
-            console.error(error);
-            res.json({
                 data: {},
-                message: 'Internal server error',
-                status: 500
+                message: 'Order not found',
+                status: 404
             });
         }
-    });
+        return res.json({
+            data: {},
+            message: 'Order deleted successfully',
+            status: 200
+        });
+    } catch (error) {
+        console.error(error);
+        res.json({
+            data: {},
+            message: 'Internal server error',
+            status: 500
+        });
+    }
 }
