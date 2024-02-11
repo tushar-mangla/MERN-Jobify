@@ -58,12 +58,15 @@ export const createOrder = async (req, res) => {
 
 export const getOrderList = async (req, res) => {
     try {
-        let orders;
-        if (req.user.role === 'admin') {
-            orders = await OrderDetails.find();
-        } else {
-            orders = await OrderDetails.find({ userId: req.user.userId });
+        let orders = [];
+        let filter = {};
+        if (req.user.role === 'user') {
+            filter = {
+                userId: req.user.userId
+            }
         }
+        orders = await OrderDetails.find(filter).sort({ _id: -1 });
+
         res.status(201).json({
             data: orders,
             message: 'orders list',

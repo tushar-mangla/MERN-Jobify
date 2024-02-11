@@ -22,7 +22,7 @@ export const authMiddleware = (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
-    if (err instanceof jwt.TokenExpiredError) {
+    if (error instanceof jwt.TokenExpiredError) {
       return res.status(401).json({
         data: {},
         message: 'Unauthorized',

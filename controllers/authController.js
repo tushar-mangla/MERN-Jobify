@@ -78,7 +78,10 @@ export const login = async (req, res) => {
     const token = createJWT({ userId: user._id, role: user.role });
 
     res.json({
-      data: token,
+      data: {
+        token,
+        user
+      },
       message: "login successfully",
       status: 20
     });
