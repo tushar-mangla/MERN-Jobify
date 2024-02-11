@@ -4,7 +4,7 @@ import OrderDetails from "../models/OrderDetails.js";
 
 export const createOrder = async (req, res) => {
     try {
-        const { userId } = req.user;
+        const { userId, name } = req.user;
         const { items, address } = req.body;
 
         if (items?.length == 0) {
@@ -37,7 +37,9 @@ export const createOrder = async (req, res) => {
             userId,
             items,
             totalAmount,
-            address
+            address,
+            name,
+            time: Math.floor(Date.now() / 1000)
         });
         await order.save();
 
@@ -65,7 +67,12 @@ export const getOrderList = async (req, res) => {
                 userId: req.user.userId
             }
         }
+        if (req.query?.status) {
+            filter = { ...filter, status: req.query.status }
+        }
         orders = await OrderDetails.find(filter).sort({ _id: -1 });
+
+
 
         res.status(201).json({
             data: orders,

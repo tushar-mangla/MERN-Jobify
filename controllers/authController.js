@@ -75,7 +75,7 @@ export const login = async (req, res) => {
       });
     }
 
-    const token = createJWT({ userId: user._id, role: user.role });
+    const token = createJWT({ userId: user._id, role: user.role, name: user.name });
 
     res.json({
       data: {

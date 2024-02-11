@@ -11,7 +11,10 @@ const orderSchema = new mongoose.Schema({
     paymentId: String,
     isOrderConfirmed: { type: Boolean, default: false }, // New field to track order confirmation status
     status: { type: String, default: 'Pending' }, // Pending, Confirmed, Delivered, etc.
-    address: String // Address of the order
+    address: String,// Address of the order,
+    name: String,
+    time: Number
+
 });
 
 export default mongoose.model('Order', orderSchema);
