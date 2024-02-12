@@ -13,6 +13,7 @@ const orderSchema = new mongoose.Schema({
     status: { type: String, default: 'Pending' }, // Pending, Confirmed, Delivered, etc.
     address: String,// Address of the order,
     name: String,
+    phoneNo: String,
     driverInfo: String,
     time: Number
 
